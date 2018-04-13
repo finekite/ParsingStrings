@@ -1,87 +1,97 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
 
 namespace CodingChallenge
 {
-    class Program
+    static class Program
     {
-        static readonly object _object = new object();
-
         static void Main(string[] args)
-        {
+        { 
             var personList = new List<Person>();
             string personRecords = "(Name)John Doe\n(Age)20\n(City)Ashtabula, OH\n(Flags)NYN\n\n(Name)Jane Doe\n(Flags)YNY\n(City)N Kingsville, OH\n\n(Name)Sally Jones\n(Age)25\n(City)Paris\n(Flags)YYY";
             var result = Regex.Split(personRecords, "\r\n|\r|\n");
             var person = new Person();
+
             foreach (var line in result)
             {
                 if (!string.IsNullOrEmpty(line))
                 {
-                    if (line.ToLower().Contains("name"))
-                    {
-                        person.Name = line.Substring(line.IndexOf(")") + 1).Trim();
-                    }
-                    else if (line.ToLower().Contains("age"))
-                    {
-                        person.Age = line.Substring(line.IndexOf(")") + 1).Trim();
-                    }
-                    else if (line.ToLower().Contains("city"))
-                    {
-                        if (line.Contains(","))
-                        {
-                            var cityState = line.Split(',');
-                            person.City = cityState[0].Substring(cityState[0].IndexOf(")") + 1).Trim();
-                            person.State = cityState[1].Trim();
-                        }
-                        else
-                        {
-                            person.City = line.Substring(line.IndexOf(")") + 1).Trim();
-                        }
-                    }
-                    else if (line.ToLower().Contains("flag"))
-                    {
-                        var flagSplit = line.Substring(line.IndexOf(")") + 1).Trim().ToCharArray();
-                        person.Gender = flagSplit[0] == 'Y' ? "Female" : "Male";
-                        person.IsStudent = flagSplit[1] == 'Y' ? "Yes" : "No";
-                        person.IsEmployee = flagSplit[2] == 'Y' ? "Yes" : "No";
-                    }
+                    var keyValue = ParseStringToKeyValue(line);
+                    AddPersonAttributeToPerson(keyValue, person);
                 }
                 else
                 {
-                    personList.Add(person);
+                    FormatAndPrintPerson(person);
                     person = new Person();
                 }
             }
-            personList.Add(person);
-            string newFormat = string.Empty;
-            foreach (var personAdded in personList)
-            {
-                personAdded.State = personAdded.State ?? "N\\A";
-                personAdded.Age = personAdded.Age != null ? personAdded.Age + ", " : "";
-                newFormat += personAdded.Name + " [" + personAdded.Age + personAdded.Gender + "]\n\t" + "City\t : " + personAdded.City + "\n\t" + "State\t : " + personAdded.State + "\n\t" + "Student\t : " + personAdded.IsStudent + "\n" + "\tEmployee : " + personAdded.IsEmployee + "\n";
-            }
-
-            Console.WriteLine(newFormat);
             Console.ReadLine();
         }
 
-        public class Person
+        static void FormatAndPrintPerson(Person person)
         {
-            public string Name { get; set; }
+            var stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine(string.Format("{0} [{1}{2}]", person.Name, person.Age != null ? person.Age + ", " : "", person.Gender));
+            stringBuilder.AppendLine(string.Format("\tCity\t: {0}", person.City));
+            stringBuilder.AppendLine(string.Format("\tState\t: {0}", person.State));
+            stringBuilder.AppendLine(string.Format("\tStudent\t: {0}", person.IsStudent));
+            stringBuilder.AppendLine(string.Format("\tEmployee: {0}", person.IsEmployee));
+            Console.WriteLine(stringBuilder);
+        }
 
-            public string Age { get; set; }
 
-            public string City { get; set; }
+        static KeyValuePair<string, string> ParseStringToKeyValue(string line)
+        {
+            var splitLine = line.Split(')');
+            var keyValuePair = new KeyValuePair<string, string>(splitLine[0].Replace("(", "").Trim(), splitLine[1].Trim());
+            return keyValuePair;
+        }
 
-            public string Gender { get; set; }
+        static void AddPersonAttributeToPerson(KeyValuePair<string, string> keyValuePair, Person person)
+        {
+            string key = keyValuePair.Key;
+            switch (key)
+            {
+                case "Name":
+                    person.Name = keyValuePair.Value;
+                    break;
+                case "Age":
+                    person.Age = keyValuePair.Value;
+                    break;
+                case "City":
+                    AsignCityState(keyValuePair.Value, person);
+                    break;
+                case "Flags":
+                    AssignFlagsToPerson(keyValuePair.Value, person);
+                    break;
+                default:
+                    break;
+            }
+        }
 
-            public string State { get; set; }
+        static void AssignFlagsToPerson(string flags, Person person)
+        {
+            var flagSplit = flags.ToCharArray();
+            person.Gender = flagSplit[0] == 'Y' ? "Female" : "Male";
+            person.IsStudent = flagSplit[1] == 'Y' ? "Yes" : "No";
+            person.IsEmployee = flagSplit[2] == 'Y' ? "Yes" : "No";
+        }
 
-            public string IsStudent { get; set; }
-
-            public string IsEmployee { get; set; }
+        static void AsignCityState(string cityState, Person person)
+        {
+            if (cityState.Contains(","))
+            {
+                var cityStateSplit = cityState.Split(',');
+                person.City = cityStateSplit[0].Trim();
+                person.State = cityStateSplit[1].Trim();
+            }
+            else
+            {
+                person.City = cityState;
+                person.State = "N\\A";
+            }
         }
     }
 }
