@@ -43,18 +43,7 @@ namespace CodingChallenge
             var keyValuePair = new KeyValuePair<string, string>(splitLine[0].Replace("(", "").Trim(), splitLine[1].Trim());
             return keyValuePair;
         }
-
-        static void FormatAndPrintPerson(Person person)
-        {
-            var stringBuilder = new StringBuilder();
-            stringBuilder.AppendLine(string.Format("{0} [{1}{2}]", person.Name, person.Age != null ? person.Age + ", " : "", person.Gender));
-            stringBuilder.AppendLine(string.Format("\tCity\t: {0}", person.City));
-            stringBuilder.AppendLine(string.Format("\tState\t: {0}", person.State));
-            stringBuilder.AppendLine(string.Format("\tStudent\t: {0}", person.IsStudent));
-            stringBuilder.AppendLine(string.Format("\tEmployee: {0}", person.IsEmployee));
-            Console.WriteLine(stringBuilder);
-        }
-
+        
         static void AddPersonAttributeToPerson(KeyValuePair<string, string> keyValuePair, Person person)
         {
             string key = keyValuePair.Key;
@@ -76,15 +65,7 @@ namespace CodingChallenge
                     break;
             }
         }
-
-        static void AssignFlagsToPerson(string flags, Person person)
-        {
-            var flagSplit = flags.ToCharArray();
-            person.Gender = flagSplit[0] == 'Y' ? "Female" : "Male";
-            person.IsStudent = flagSplit[1] == 'Y' ? "Yes" : "No";
-            person.IsEmployee = flagSplit[2] == 'Y' ? "Yes" : "No";
-        }
-
+        
         static void AsignCityState(string cityState, Person person)
         {
             if (cityState.Contains(","))
@@ -98,6 +79,25 @@ namespace CodingChallenge
                 person.City = cityState;
                 person.State = "N\\A";
             }
+        }
+        
+        static void AssignFlagsToPerson(string flags, Person person)
+        {
+            var flagSplit = flags.ToCharArray();
+            person.Gender = flagSplit[0] == 'Y' ? "Female" : "Male";
+            person.IsStudent = flagSplit[1] == 'Y' ? "Yes" : "No";
+            person.IsEmployee = flagSplit[2] == 'Y' ? "Yes" : "No";
+        }
+
+        static void FormatAndPrintPerson(Person person)
+        {
+            var stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine(string.Format("{0} [{1}{2}]", person.Name, person.Age != null ? person.Age + ", " : "", person.Gender));
+            stringBuilder.AppendLine(string.Format("\tCity\t: {0}", person.City));
+            stringBuilder.AppendLine(string.Format("\tState\t: {0}", person.State));
+            stringBuilder.AppendLine(string.Format("\tStudent\t: {0}", person.IsStudent));
+            stringBuilder.AppendLine(string.Format("\tEmployee: {0}", person.IsEmployee));
+            Console.WriteLine(stringBuilder);
         }
     }
 }
