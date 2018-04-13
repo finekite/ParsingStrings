@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace CodingChallenge
 {
@@ -9,25 +9,39 @@ namespace CodingChallenge
     {
         static void Main(string[] args)
         { 
-            var personList = new List<Person>();
-            string personRecords = "(Name)John Doe\n(Age)20\n(City)Ashtabula, OH\n(Flags)NYN\n\n(Name)Jane Doe\n(Flags)YNY\n(City)N Kingsville, OH\n\n(Name)Sally Jones\n(Age)25\n(City)Paris\n(Flags)YYY";
-            var result = Regex.Split(personRecords, "\r\n|\r|\n");
-            var person = new Person();
+            string currentFormat = "(Name)John Doe\n(Age)20\n(City)Ashtabula, OH\n(Flags)NYN\n\n(Name)Jane Doe\n(Flags)YNY\n(City)N Kingsville, OH\n\n(Name)Sally Jones\n(Age)25\n(City)Paris\n(Flags)YYY";
+            ReformatString(currentFormat, new Person());
+            Console.ReadLine();
+        }
 
-            foreach (var line in result)
+        static void ReformatString(string currentFormat, Person person)
+        {
+            using (StringReader reader = new StringReader(currentFormat))
             {
-                if (!string.IsNullOrEmpty(line))
+                string line;
+                while ((line = reader.ReadLine()) != null)
                 {
-                    var keyValue = ParseStringToKeyValue(line);
-                    AddPersonAttributeToPerson(keyValue, person);
-                }
-                else
-                {
-                    FormatAndPrintPerson(person);
-                    person = new Person();
+                    if (!string.IsNullOrEmpty(line))
+                    {
+                        var keyValue = ParseLineToKeyValue(line);
+                        AddPersonAttributeToPerson(keyValue, person);
+                    }
+                    else
+                    {
+                        FormatAndPrintPerson(person);
+                        person = new Person();
+                    }
                 }
             }
-            Console.ReadLine();
+            FormatAndPrintPerson(person);
+        }
+
+
+        static KeyValuePair<string, string> ParseLineToKeyValue(string line)
+        {
+            var splitLine = line.Split(')');
+            var keyValuePair = new KeyValuePair<string, string>(splitLine[0].Replace("(", "").Trim(), splitLine[1].Trim());
+            return keyValuePair;
         }
 
         static void FormatAndPrintPerson(Person person)
@@ -39,14 +53,6 @@ namespace CodingChallenge
             stringBuilder.AppendLine(string.Format("\tStudent\t: {0}", person.IsStudent));
             stringBuilder.AppendLine(string.Format("\tEmployee: {0}", person.IsEmployee));
             Console.WriteLine(stringBuilder);
-        }
-
-
-        static KeyValuePair<string, string> ParseStringToKeyValue(string line)
-        {
-            var splitLine = line.Split(')');
-            var keyValuePair = new KeyValuePair<string, string>(splitLine[0].Replace("(", "").Trim(), splitLine[1].Trim());
-            return keyValuePair;
         }
 
         static void AddPersonAttributeToPerson(KeyValuePair<string, string> keyValuePair, Person person)
