@@ -8,15 +8,15 @@ namespace ParsingTexts
     {
         private InputType inputType;
 
-        IParser parser;
+        private IParser parser;
 
         public ParserService(InputType inputType)
         {
             this.inputType = inputType;
+            ImplementParser();
         }
 
-
-        public KeyValuePair<string, string> ParseKeyValuePair(string line)
+        private void ImplementParser()
         {
             if (inputType.Equals(InputType.XML))
             {
@@ -30,6 +30,11 @@ namespace ParsingTexts
             {
                 parser = new ParenthesesParser();
             }
+        }
+
+
+        public KeyValuePair<string, string> ParseKeyValuePair(string line)
+        {
             return parser.ParseKeyValuePair(line);
         }
     }

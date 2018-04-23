@@ -10,16 +10,31 @@ namespace ParsingTexts
     {
         static void Main(string[] args)
         {
-            string currentFormat =  //Console.ReadLine();
-            "(Name)John Doe\n(Age)20\n(City)Ashtabula, OH\n(Flags)NYN\n\n(Name)Jane Doe\n(Flags)YNY\n(City)N Kingsville, OH\n\n(Name)Sally Jones\n(Age)25\n(City)Paris\n(Flags)YYY";
-            var inputType = InputTypeDeterminator.DetermineInputType(currentFormat[0]);
-            ReformatString(new Person(), currentFormat, inputType);
+            string input = @"(Name)John Doe
+                            (Age)20
+                            (City)Ashtabula, OH
+                            (Flags)NYN
+
+                            (Name)Jane Doe
+                            (Flags)YNY
+                            (City)N Kingsville, OH
+
+                            (Name)Sally Jones
+                            (Age)25
+                            (City)Paris
+                            (Flags)YYY";
+            var inputType = InputTypeDeterminator.DetermineInputType(input[0]);
+            foreach (var person in ParsePeople(input, inputType))
+            {
+                WritePerson(person);
+            }
             Console.ReadLine();
         }
 
-        static void ReformatString(Person person, string currentFormat, InputType type)
+        static IEnumerable<Person> ParsePeople(string input, InputType type)
         {
-            using (StringReader reader = new StringReader(currentFormat))
+            var person = new Person();
+            using (StringReader reader = new StringReader(input))
             {
                 string line;
                 int linesPerPerson = 0;
@@ -34,8 +49,7 @@ namespace ParsingTexts
                     }
                     else
                     {
-                        FormatAndPrintPerson(person);
-                        person = new Person();
+                        yield return person;
                         linesPerPerson = 0;
                     }
                 }
@@ -87,7 +101,7 @@ namespace ParsingTexts
             person.IsEmployee = flagSplit[2] == 'Y' ? "Yes" : "No";
         }
 
-        static void FormatAndPrintPerson(Person person)
+        static void WritePerson(Person person)
         {
             var stringBuilder = new StringBuilder();
             stringBuilder.AppendLine(string.Format("{0} [{1}{2}]", person.Name, person.Age != null ? person.Age + ", " : "", person.Gender));
@@ -95,7 +109,7 @@ namespace ParsingTexts
             stringBuilder.AppendLine(string.Format("\tState\t: {0}", person.State));
             stringBuilder.AppendLine(string.Format("\tStudent\t: {0}", person.IsStudent));
             stringBuilder.AppendLine(string.Format("\tEmployee: {0}", person.IsEmployee));
-            Console.WriteLine(stringBuilder);
+            Console.Write(stringBuilder);
         }
     }
 }
