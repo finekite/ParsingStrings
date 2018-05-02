@@ -2,7 +2,7 @@
 
 namespace ParsingTexts
 {
-    interface IParser
+    public interface IParser
     {
         KeyValuePair<string, string> ParseKeyValuePair(string line);
     }
