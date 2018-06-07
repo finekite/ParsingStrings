@@ -27,7 +27,6 @@ namespace ParsingTexts
         static void Main(string[] args)
         {
             ConfigureConatiner(input);
-            var mapper = new PersonMapper();
             var program = kernel.Get<RunProgram>();
             program.ParseText(input);
             Console.ReadLine();
