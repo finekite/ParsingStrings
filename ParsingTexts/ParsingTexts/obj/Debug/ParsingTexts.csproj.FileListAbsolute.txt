@@ -1,7 +1,10 @@
 C:\Users\sgoldman\Documents\Visual Studio 2017\Projects\ParsingTexts\ParsingTexts\bin\Debug\ParsingTexts.exe.config
 C:\Users\sgoldman\Documents\Visual Studio 2017\Projects\ParsingTexts\ParsingTexts\bin\Debug\ParsingTexts.exe
 C:\Users\sgoldman\Documents\Visual Studio 2017\Projects\ParsingTexts\ParsingTexts\bin\Debug\ParsingTexts.pdb
-C:\Users\sgoldman\Documents\Visual Studio 2017\Projects\ParsingTexts\ParsingTexts\obj\Debug\ParsingTexts.csprojResolveAssemblyReference.cache
 C:\Users\sgoldman\Documents\Visual Studio 2017\Projects\ParsingTexts\ParsingTexts\obj\Debug\ParsingTexts.csproj.CoreCompileInputs.cache
 C:\Users\sgoldman\Documents\Visual Studio 2017\Projects\ParsingTexts\ParsingTexts\obj\Debug\ParsingTexts.exe
 C:\Users\sgoldman\Documents\Visual Studio 2017\Projects\ParsingTexts\ParsingTexts\obj\Debug\ParsingTexts.pdb
+C:\Users\sgoldman\Documents\Visual Studio 2017\Projects\ParsingTexts\ParsingTexts\obj\Debug\ParsingTexts.csprojAssemblyReference.cache
+C:\Users\sgoldman\Documents\Visual Studio 2017\Projects\ParsingTexts\ParsingTexts\bin\Debug\Ninject.dll
+C:\Users\sgoldman\Documents\Visual Studio 2017\Projects\ParsingTexts\ParsingTexts\bin\Debug\Ninject.xml
+C:\Users\sgoldman\Documents\Visual Studio 2017\Projects\ParsingTexts\ParsingTexts\obj\Debug\ParsingTexts.csproj.CopyComplete

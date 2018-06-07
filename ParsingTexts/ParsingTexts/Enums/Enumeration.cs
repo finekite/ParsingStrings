@@ -3,9 +3,9 @@ namespace ParsingTexts.Enums
 {
     public class Enumeration
     {
-        private readonly int id;
+        public readonly int id;
 
-        private readonly string displayValue;
+        public readonly string displayValue;
 
         protected Enumeration(int id, string displayValue)
         {

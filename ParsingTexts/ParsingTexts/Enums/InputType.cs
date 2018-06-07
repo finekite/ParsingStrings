@@ -1,11 +1,12 @@
 ﻿
+using ParsingTexts.KeyValueParsers;
+
 namespace ParsingTexts.Enums
 {
     public class InputType : Enumeration
     {
         protected InputType(int id, string displayValue) : base(id, displayValue)
         {
-
         }
 
         public static readonly InputType XML = new InputType(1, "XML");
